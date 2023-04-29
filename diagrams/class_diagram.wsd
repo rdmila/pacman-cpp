@@ -1,0 +1,120 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Game
+
+enum Direction
+class Map
+class Cell
+class Edge
+interface MapInterface
+class Position
+interface PositionOwner
+
+class Candy
+class ExtraCandy
+
+abstract Mob
+class Pacman
+class Ghost
+interface DirectionChooser
+class RandomDirectionChooser
+class ChaseDirectionChooser
+class ControllableDirectionChooser
+
+class Event
+class EventManager
+interface Observer
+
+Game : is_finished : bool
+
+Cell : x : int
+Cell : y : int
+
+Edge : first : Cell
+Edge : second : Cell
+Edge : {static} length : int
+Edge : IsVertical() : bool
+
+Map : candyCnt : int
+Map : is_wall : bool[][]
+Map : candies : Candy[][]
+Map : event_manager : EventManager
+Map : EatCandy(Position)
+
+MapInterface : GetAvailableDirections(Position) : tuple<Direction>
+MapInterface : StepOn(Position) : Event
+MapInterface : GetShortestPath(Position, Position)
+MapInterface : GetStraightDistance(Position, Position)
+
+PositionOwner : GetPosition() : Position
+
+
+Position : edge : Edge
+Position : shift : int
+
+Candy : {static} points : int
+Candy : {static} event : Event
+
+ExtraCandy : {static} points : int
+ExtraCandy : {static} event : Event
+
+Mob : position : Position
+Mob : last_update_time : int
+Mob : speed : int
+Mob : current_direction : Direction
+Mob : {abstract} direction_chooser : DirectionChooser
+Mob : UpdatePosition()
+Mob : map : MapInterface
+
+Pacman : score
+
+Ghost : sight_radius : int
+Ghost : UpdatePosition()
+Ghost : direction_chooser : DirectionChooser
+
+DirectionChooser : ChooseDirection()
+
+ChaseDirectionChooser : aim : PositionOwner
+ChaseDirectionChooser : map : MapInterface
+
+ControllableDirectionChooser : required_direction : Direction
+ControllableDirectionChooser : SetDirection()
+
+EventManager : observers : Observer[]
+EventManager : AddObserver(Observer)
+EventManager : Notify(Event)
+
+Observer : HandleEvent(Event)
+
+Mob <|-- Pacman
+Mob <|-- Ghost
+
+DirectionChooser <|-- RandomDirectionChooser
+DirectionChooser <|-- ChaseDirectionChooser
+DirectionChooser <|-- ControllableDirectionChooser
+
+ChaseDirectionChooser o-- MapInterface
+ChaseDirectionChooser o-- PositionOwner
+
+Mob *-- DirectionChooser
+
+Observer <|-- Ghost
+
+Event -- EventManager
+
+Position o-- Edge
+
+Edge o-- Cell
+
+MapInterface <|-- Map
+
+Mob o-- EventManager
+
+Mob o-- MapInterface
+
+Map *-- Candy
+Candy <|-- ExtraCandy
+
+Position *-- Mob
+@enduml
