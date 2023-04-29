@@ -7,7 +7,6 @@ enum Direction
 class Map
 class Cell
 class Edge
-interface MapInterface
 class Position
 interface PositionOwner
 
@@ -27,6 +26,8 @@ class EventManager
 interface Observer
 
 Game : is_finished : bool
+Game : pacman : Pacman
+Game : ghosts : Ghost[]
 
 Cell : x : int
 Cell : y : int
@@ -42,10 +43,9 @@ Map : candies : Candy[][]
 Map : event_manager : EventManager
 Map : EatCandy(Position)
 
-MapInterface : GetAvailableDirections(Position) : tuple<Direction>
-MapInterface : StepOn(Position) : Event
-MapInterface : GetShortestPath(Position, Position)
-MapInterface : GetStraightDistance(Position, Position)
+Map : GetAvailableDirections(Position) : tuple<Direction>
+Map : GetShortestPath(Position, Position)
+Map : GetStraightDistance(Position, Position)
 
 PositionOwner : GetPosition() : Position
 
@@ -65,7 +65,7 @@ Mob : speed : int
 Mob : current_direction : Direction
 Mob : {abstract} direction_chooser : DirectionChooser
 Mob : UpdatePosition()
-Mob : map : MapInterface
+Mob : map : Map
 
 Pacman : score
 
@@ -73,10 +73,10 @@ Ghost : sight_radius : int
 Ghost : UpdatePosition()
 Ghost : direction_chooser : DirectionChooser
 
-DirectionChooser : ChooseDirection()
+DirectionChooser : ChooseDirection(Position)
 
 ChaseDirectionChooser : aim : PositionOwner
-ChaseDirectionChooser : map : MapInterface
+ChaseDirectionChooser : map : Map
 
 ControllableDirectionChooser : required_direction : Direction
 ControllableDirectionChooser : SetDirection()
@@ -87,15 +87,17 @@ EventManager : Notify(Event)
 
 Observer : HandleEvent(Event)
 
+Game o-- Mob
+Game o-- Map
+
+PositionOwner <|-- Mob
+
 Mob <|-- Pacman
 Mob <|-- Ghost
 
 DirectionChooser <|-- RandomDirectionChooser
 DirectionChooser <|-- ChaseDirectionChooser
 DirectionChooser <|-- ControllableDirectionChooser
-
-ChaseDirectionChooser o-- MapInterface
-ChaseDirectionChooser o-- PositionOwner
 
 Mob *-- DirectionChooser
 
@@ -107,14 +109,10 @@ Position o-- Edge
 
 Edge o-- Cell
 
-MapInterface <|-- Map
-
-Mob o-- EventManager
-
-Mob o-- MapInterface
-
+Map o-- EventManager
 Map *-- Candy
-Candy <|-- ExtraCandy
 
-Position *-- Mob
+EventManager o-- Observer
+
+Candy <|-- ExtraCandy
 @enduml
