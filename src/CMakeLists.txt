@@ -12,6 +12,7 @@ include_directories(view)
 set(SOURCES
     main.cpp
     game.cpp
+    model/loader.cpp
     model/mobs.cpp
     model/map.cpp
     model/model.cpp
