@@ -4,6 +4,8 @@ project(Pacman)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+find_package(Boost 1.67.0 REQUIRED)
+
 include_directories(model)
 include_directories(view)
 
@@ -11,6 +13,7 @@ set(SOURCES
     main.cpp
     game.cpp
     model/mobs.cpp
+    model/map.cpp
     model/model.cpp
     view/view.cpp
 )
