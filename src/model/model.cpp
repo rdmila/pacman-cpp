@@ -1,7 +1,21 @@
 #include "mobs.h"
 #include "model.h"
+#include "loader.h"
 
-Model::Model(): finish(false) {}
+Model::Model() : finish(false), pacman(map) {
+    Loader::Load(map);
+    pacman.Init();
+    for (auto &i : ghosts) {
+        i = new Ghost(map);
+        i->Init();
+    }
+}
+
+Model::~Model() {
+    for (auto &i : ghosts) {
+        delete i;
+    }
+}
 
 bool Model::IsFinished() {
     return finish;
@@ -10,6 +24,7 @@ bool Model::IsFinished() {
 void Model::Update() {
     pacman.UpdatePosition();
     for (auto &ghost : ghosts) {
-        ghost.UpdatePosition();
+        ghost->UpdatePosition();
     }
 }
+
