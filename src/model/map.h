@@ -1,9 +1,12 @@
 #pragma once
 #include <array>
+#include "loader.h"
 #include <boost/multi_array.hpp>
 
 enum class Alignment {VERTICAL, HORIZONTAL};
-enum class Direction {NONE, UP, RIGHT, DOWN, LEFT};
+enum class Direction {UP = 0, RIGHT, DOWN, LEFT, NONE};
+
+class Loader;
 
 struct Shift {
     int y;
@@ -35,10 +38,13 @@ class Map {
     int height;
     int width;
     boost::multi_array<bool, 2> is_passage;
-    void InitializeWall(int y, int x, bool is_passage_cell);
+    void SetSize(int height, int width);
+    void SetCell(int y, int x, bool is_passage_cell);
 
 public:
-    Map(int height, int width);
     bool IsPassage(const Cell& cell);
     bool IsLegalDirection(Cell cell, Direction direction);
+    Position GetPosition(const Cell&);
+
+    friend Loader;
 };

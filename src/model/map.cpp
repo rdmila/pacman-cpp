@@ -1,4 +1,4 @@
-#include <map.h>
+#include "map.h"
 #include <stdexcept>
 
 inline Shift GetShift(Direction direction) {
@@ -24,11 +24,9 @@ Cell& Cell::operator+=(const Shift& shift) {
     return *this;
 }
 
-void Map::InitializeWall(int y, int x, bool is_passage_cell) {
+void Map::SetCell(int y, int x, bool is_passage_cell) {
     is_passage[y][x] = is_passage_cell;
 }
-
-Map::Map(int height, int width) : is_passage(boost::extents[height][width]) {}
 
 bool Map::IsPassage(const Cell& cell) {
     return is_passage[cell.y][cell.x];
@@ -37,4 +35,25 @@ bool Map::IsPassage(const Cell& cell) {
 bool Map::IsLegalDirection(Cell cell, Direction dir) {
     cell += GetShift(dir);
     return IsPassage(cell);
+}
+
+Position Map::GetPosition(const Cell& first) {
+    for (int dir_int = 0; ; ++dir_int) {
+        auto dir = static_cast<Direction>(dir_int);
+        if (dir == Direction::NONE) {
+            break;
+        }
+        if (IsLegalDirection(first, dir)) {
+            Cell second = first;
+            second += GetShift(dir);
+            return {{first, second}, 0};
+        }
+    }
+}
+
+void Map::SetSize(int height, int width) {
+    (*this).height = height;
+    (*this).width = width;
+    boost::multi_array<bool, 2>::extent_gen extents;
+    is_passage.resize(extents[height][width]);
 }
