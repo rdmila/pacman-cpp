@@ -10,20 +10,20 @@ void Mob::Init() {
     speed = GetInitialSpeed();
 }
 
-Direction Mob::GetSpawnDirection() {
-    return Direction::NONE;
-}
-
-int Mob::GetInitialSpeed() {
-    return 1;
-}
-
 Cell Pacman::GetSpawnCell() {
     return {19, 3};
 }
 
 Cell Ghost::GetSpawnCell() {
     return {19, 12};
+}
+
+Direction Mob::GetSpawnDirection() {
+    return Direction::NONE;
+}
+
+int Mob::GetInitialSpeed() {
+    return 1;
 }
 
 void Mob::UpdatePosition() {
