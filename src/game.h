@@ -1,19 +1,21 @@
 #pragma once
+
 #include "model/model.h"
 #include "view/view.h"
 #include <chrono>
 
-// using namespace std::chrono_literals;
+using namespace std::chrono_literals;
 
 class Game {
-    // const static std::chrono::milliseconds update_interval = 10ms;
+    using clock_type = std::chrono::steady_clock;
+    const static std::chrono::nanoseconds constexpr update_interval = 1'000'000'000ns;
 
-    // std::chrono::steady_clock clock;
-    // std::chrono::time_point last_run_time;
+    std::chrono::time_point<clock_type> last_run_time;
     Model model;
     ConsoleLogger logger;
 
 public:
     Game();
+
     void run();
 };
