@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 project(Pacman)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(Boost 1.67.0 REQUIRED)
@@ -10,13 +10,14 @@ include_directories(model)
 include_directories(view)
 
 set(SOURCES
-    main.cpp
-    game.cpp
-    model/loader.cpp
-    model/mobs.cpp
-    model/map.cpp
-    model/model.cpp
-    view/view.cpp
-)
+        main.cpp
+        game.cpp
+        model/loader.cpp
+        model/mobs.cpp
+        model/map.cpp
+        model/utils.cpp
+        model/dir_choosers.cpp
+        model/model.cpp
+        view/view.cpp)
 
 add_executable(Pacman ${SOURCES})
