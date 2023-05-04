@@ -1,33 +1,44 @@
 #pragma once
 #include <map.h>
+#include "utils.h"
+#include "dir_choosers.h"
 
-class Mob {
+class Mob : public PositionOwner {
+protected:
     Position position;
     Direction direction;
     int speed;
-    // DirectionChooser& direction_chooser;
+    DirectionChooser* tmp_chooser;
     Map& map;
-
-    virtual Cell GetSpawnCell() = 0;
-    static Direction GetSpawnDirection();
-    static int GetInitialSpeed();
+    virtual Cell SpawnCell() = 0;
+    virtual void SetChooser() = 0;
 
 public:
-    Mob(Map&);
+    explicit Mob(Map&);
     void Init();
 
-    void UpdatePosition();
+    virtual void UpdatePosition();
+    Position GetPosition() override;
 };
 
 class Pacman : public Mob {
-    Cell GetSpawnCell();
+    Cell SpawnCell() override;
+    void SetChooser() override;
 public:
-    Pacman(Map&);
+    explicit Pacman(Map&);
 };
 
 class Ghost : public Mob {
-    Cell GetSpawnCell();
+    static const int SIGHT_RADIUS = 10;
+    
+    int sight_radius;
+    PositionOwner& aim;
+    DirectionChooser* chase;
+    DirectionChooser& rand;
+
+    Cell SpawnCell() override;
+    void SetChooser() override;
 public:
-    void UpdatePosition();
-    Ghost(Map&);
+    void UpdatePosition() override;
+    Ghost(Map &map, PositionOwner &pacman);
 };
