@@ -6,7 +6,7 @@ Model::Model() : finish(false), pacman(map) {
     Loader::Load(map);
     pacman.Init();
     for (auto &i : ghosts) {
-        i = new Ghost(map);
+        i = new Ghost(map, pacman);
         i->Init();
     }
 }
@@ -23,8 +23,8 @@ bool Model::IsFinished() {
 
 void Model::Update() {
     pacman.UpdatePosition();
-    for (auto &ghost : ghosts) {
-        ghost->UpdatePosition();
-    }
+//    for (auto &ghost : ghosts) {
+//        ghost->UpdatePosition();
+//    }
 }
 

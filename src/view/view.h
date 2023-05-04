@@ -1,13 +1,18 @@
 #pragma once
 #include "../model/model.h"
 
+class Model;
+
 class View {
-    // Model& model;
+protected:
+     Model& model;
 public:
+    explicit View(Model&);
     virtual void show() = 0;
 };
 
-class ConsoleLogger : View {
+class ConsoleLogger : public View {
 public:
+    explicit ConsoleLogger(Model&);
     void show();
 };

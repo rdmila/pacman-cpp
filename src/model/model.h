@@ -2,6 +2,9 @@
 #include "mobs.h"
 #include <string>
 #include <array>
+#include "view.h"
+
+class ConsoleLogger;
 
 class Model {
     bool finish;
@@ -15,4 +18,7 @@ public:
 
     bool IsFinished();
     void Update();
+
+//    friend View;
+    friend ConsoleLogger;
 };
