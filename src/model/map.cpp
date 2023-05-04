@@ -1,29 +1,6 @@
 #include "map.h"
 #include <stdexcept>
 
-inline Shift GetShift(Direction direction) {
-    switch(direction) {
-        case Direction::NONE:
-            return {0, 0};
-        case Direction::UP:
-            return {-1, 0};
-        case Direction::RIGHT:
-            return {0, 1};
-        case Direction::DOWN:
-            return {1, 0};
-        case Direction::LEFT:
-            return {0, -1};
-        default:
-            throw std::invalid_argument("Unknown Direction");
-    }
-}
-
-Cell& Cell::operator+=(const Shift& shift) {
-    y += shift.y;
-    x += shift.x;
-    return *this;
-}
-
 void Map::SetCell(int y, int x, bool is_passage_cell) {
     is_passage[y][x] = is_passage_cell;
 }
@@ -49,11 +26,12 @@ Position Map::GetPosition(const Cell& first) {
             return {{first, second}, 0};
         }
     }
+    throw std::invalid_argument("Invalid cell: no available directions");
 }
 
-void Map::SetSize(int height, int width) {
-    (*this).height = height;
-    (*this).width = width;
+void Map::SetSize(int height_, int width_) {
+    height = height_;
+    width = width_;
     boost::multi_array<bool, 2>::extent_gen extents;
-    is_passage.resize(extents[height][width]);
+    is_passage.resize(extents[height][width_]);
 }
