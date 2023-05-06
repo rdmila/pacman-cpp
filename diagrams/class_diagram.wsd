@@ -19,7 +19,7 @@ class Ghost
 interface DirectionChooser
 class RandomDirectionChooser
 class ChaseDirectionChooser
-class ControllableDirectionChooser
+class PlayerDirectionChooser
 
 class Event
 class EventManager
@@ -45,7 +45,7 @@ Map : EatCandy(Position)
 
 Map : GetAvailableDirections(Position) : tuple<Direction>
 Map : GetShortestPath(Position, Position)
-Map : GetStraightDistance(Position, Position)
+Map : GetStraightDistanceSqr(Position, Position)
 
 PositionOwner : GetPosition() : Position
 
@@ -69,7 +69,7 @@ Mob : map : Map
 
 Pacman : score
 
-Ghost : sight_radius : int
+Ghost : sight_radius_sqr : int
 Ghost : UpdatePosition()
 Ghost : direction_chooser : DirectionChooser
 
@@ -78,8 +78,8 @@ DirectionChooser : ChooseDirection(Position)
 ChaseDirectionChooser : aim : PositionOwner
 ChaseDirectionChooser : map : Map
 
-ControllableDirectionChooser : required_direction : Direction
-ControllableDirectionChooser : SetDirection()
+PlayerDirectionChooser : required_direction : Direction
+PlayerDirectionChooser : SetDirection()
 
 EventManager : observers : Observer[]
 EventManager : AddObserver(Observer)
@@ -97,7 +97,7 @@ Mob <|-- Ghost
 
 DirectionChooser <|-- RandomDirectionChooser
 DirectionChooser <|-- ChaseDirectionChooser
-DirectionChooser <|-- ControllableDirectionChooser
+DirectionChooser <|-- PlayerDirectionChooser
 
 Mob *-- DirectionChooser
 

@@ -11,6 +11,7 @@ class Model {
     Map map;
     Pacman pacman;
     std::array<Ghost*, 5> ghosts;
+    const static int CELL_WIDTH = Cell::width;
 
 public:
     Model();
@@ -19,6 +20,5 @@ public:
     bool IsFinished();
     void Update();
 
-//    friend View;
     friend ConsoleLogger;
 };

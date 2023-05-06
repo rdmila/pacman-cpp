@@ -12,6 +12,7 @@ protected:
     Map& map;
     virtual Cell SpawnCell() = 0;
     virtual void SetChooser() = 0;
+    virtual bool EdgeDirectionReverseAllowed() = 0;
 
 public:
     explicit Mob(Map&);
@@ -24,20 +25,23 @@ public:
 class Pacman : public Mob {
     Cell SpawnCell() override;
     void SetChooser() override;
+    bool EdgeDirectionReverseAllowed() override;
 public:
+    PlayerDirectionChooser* GetChooser();
     explicit Pacman(Map&);
 };
 
 class Ghost : public Mob {
-    static const int SIGHT_RADIUS = 10;
+    static const int SIGHT_RADIUS = 4 * Cell::width;
     
-    int sight_radius;
+    int sight_radius_sqr;
     PositionOwner& aim;
     DirectionChooser* chase;
     DirectionChooser& rand;
 
     Cell SpawnCell() override;
     void SetChooser() override;
+    bool EdgeDirectionReverseAllowed() override;
 public:
     void UpdatePosition() override;
     Ghost(Map &map, PositionOwner &pacman);

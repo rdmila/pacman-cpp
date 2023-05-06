@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <utility>
 #include <stdexcept>
 
 Shift GetShift(Direction direction) {
@@ -36,12 +37,35 @@ Direction GetDirection(Shift shift) {
     }
 }
 
+Direction ReverseDirection(Direction dir) {
+    int dir_id = static_cast<int>(dir);
+    dir_id = -dir_id;
+    return Direction(dir_id);
+}
+
 Cell& Cell::operator+=(const Shift& shift) {
     y += shift.y;
     x += shift.x;
     return *this;
 }
 
+bool Cell::operator==(const Cell& other) const {
+    return x == other.x && y == other.y;
+}
+
+bool Cell::operator!=(const Cell& other) const {
+    return !(*this == other);
+}
+
 Shift operator-(const Cell& first, const Cell& second) {
     return {first.y - second.y, first.x - second.x};
+}
+
+void Position::reverse() {
+    std::swap(edge.first, edge.second);
+    shift = Edge::length - shift;
+}
+
+Cell Position::GetCell() const {
+    return shift * 2 <= Edge::length ? edge.first : edge.second;
 }

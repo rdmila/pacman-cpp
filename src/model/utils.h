@@ -1,7 +1,7 @@
 #pragma once
 
 enum class Alignment {VERTICAL, HORIZONTAL};
-enum class Direction {UP = 0, RIGHT, DOWN, LEFT, NONE};
+enum class Direction {UP = 1, RIGHT = 2, DOWN = -1, LEFT = -2, NONE = 0};
 
 struct Shift {
     int y;
@@ -10,12 +10,15 @@ struct Shift {
 
 Shift GetShift(Direction);
 Direction GetDirection(Shift);
+Direction ReverseDirection(Direction dir);
 
 struct Cell {
     static const int width = 100;
 
     int y;
     int x;
+    bool operator==(const Cell&) const;
+    bool operator!=(const Cell&) const;
     Cell& operator+=(const Shift&);
 };
 
@@ -33,6 +36,8 @@ struct Edge {
 struct Position {
     Edge edge;
     int shift;
+    void reverse();
+    Cell GetCell() const;
 };
 
 class PositionOwner {

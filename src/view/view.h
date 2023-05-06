@@ -8,11 +8,11 @@ protected:
      Model& model;
 public:
     explicit View(Model&);
-    virtual void show() = 0;
+    virtual void update() = 0;
 };
 
 class ConsoleLogger : public View {
 public:
     explicit ConsoleLogger(Model&);
-    void show();
+    void update() override;
 };

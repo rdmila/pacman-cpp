@@ -18,6 +18,10 @@ public:
     bool IsPassage(const Cell& cell);
     bool IsLegalDirection(Cell cell, Direction direction);
     Position GetPosition(const Cell&);
+    int GetHeight() const;
+    int GetWidth() const;
 
     friend Loader;
+    int GetStraightDistanceSqr(Cell cell, Cell cell1);
+    std::vector<Direction> GetShortestPath(Cell cell, Cell cell1);
 };

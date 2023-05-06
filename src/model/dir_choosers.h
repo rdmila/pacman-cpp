@@ -25,3 +25,12 @@ public:
     ChaseDirectionChooser(PositionOwner& hunter, PositionOwner& aim, Map& map);
     Direction ChooseDirection() override;
 };
+
+class PlayerDirectionChooser : public DirectionChooser {
+private:
+    Direction desired_direction;
+public:
+    PlayerDirectionChooser();
+    Direction ChooseDirection() override;
+    void SetDesiredDirection(Direction desiredDirection);
+};

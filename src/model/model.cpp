@@ -23,8 +23,8 @@ bool Model::IsFinished() {
 
 void Model::Update() {
     pacman.UpdatePosition();
-//    for (auto &ghost : ghosts) {
-//        ghost->UpdatePosition();
-//    }
+    for (auto &ghost : ghosts) {
+        ghost->UpdatePosition();
+    }
 }
 
