@@ -19,6 +19,6 @@ void Game::run() {
     if (model.IsFinished()) {
         return;
     }
-        logger.show();
+        logger.update();
     }
 }

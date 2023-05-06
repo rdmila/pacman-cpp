@@ -13,6 +13,3 @@ void ConsoleLogger::update() {
 }
 
 View::View(Model& model): model(model) {}
-
-ConsoleLogger::ConsoleLogger(Model& model): View(model) {}
-

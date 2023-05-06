@@ -11,7 +11,7 @@ void Mob::Init() {
 }
 
 Cell Pacman::SpawnCell() {
-    return {18, 3};
+    return {18, 6};
 }
 
 bool Pacman::EdgeDirectionReverseAllowed() {
@@ -19,7 +19,7 @@ bool Pacman::EdgeDirectionReverseAllowed() {
 }
 
 Cell Ghost::SpawnCell() {
-    return {18, 12};
+    return {1, 2};
 }
 
 bool Ghost::EdgeDirectionReverseAllowed() {
