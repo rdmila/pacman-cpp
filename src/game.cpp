@@ -12,6 +12,7 @@ void Game::run() {
         controller.Update();
         model.Update();
         if (model.IsFinished()) {
+            drawer.GameOver();
             return;
         }
         drawer.update();

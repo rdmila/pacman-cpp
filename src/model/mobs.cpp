@@ -1,4 +1,5 @@
 #include "mobs.h"
+#include <iostream>
 
 Mob::Mob(Map &map) : map(map), speed(10) {}
 
@@ -8,6 +9,20 @@ void Mob::Init() {
     Shift shift = position.edge.second - position.edge.first;
     direction = GetDirection(shift);
     SetChooser();
+    map.EventManager<GhostCollision>::AddObserver(this);
+}
+
+void Mob::HandleEvent(GhostCollision) {
+    position = map.GetPosition(SpawnCell());
+}
+
+void Pacman::HandleEvent(GhostCollision event) {
+    Mob::HandleEvent(event);
+    --lives;
+    if (lives == 0) {
+        map.EventManager<GameOver>::SendEvent(GameOver());
+    }
+
 }
 
 Cell Pacman::SpawnCell() {
@@ -51,7 +66,7 @@ void Mob::UpdatePosition() {
                     to_vertex = Edge::length - position.shift;
                 }
             }
-             if (run_limit <= to_vertex) {
+            if (run_limit <= to_vertex) {
                 position.shift += run_limit;
                 run_limit = 0;
             } else {
@@ -70,9 +85,17 @@ void Ghost::UpdatePosition() {
     int dist_to_aim_sqr = map.GetStraightDistanceSqr(position.GetCell(), aim.GetPosition().GetCell());
     tmp_chooser = (dist_to_aim_sqr <= sight_radius_sqr ? chase : &rand);
     Mob::UpdatePosition();
+    auto ghost_pos = PositionOnCanvas(position);
+    auto pacman_pos = PositionOnCanvas(aim.GetPosition());
+    auto dif = ghost_pos - pacman_pos;
+    int dist_sqr = dif.x * dif.x + dif.y * dif.y;
+    int limit = Edge::length / 2;
+    if (dist_sqr <= limit * limit) {
+        map.EventManager<GhostCollision>::SendEvent(GhostCollision());
+    }
 }
 
-Pacman::Pacman(Map &map) : Mob(map), score(0) {
+Pacman::Pacman(Map &map) : Mob(map), score(0), lives(2) {
 }
 
 void Pacman::SetChooser() {
@@ -80,7 +103,11 @@ void Pacman::SetChooser() {
 }
 
 PlayerDirectionChooser *Pacman::GetChooser() {
-    return dynamic_cast<PlayerDirectionChooser*>(tmp_chooser);
+    return dynamic_cast<PlayerDirectionChooser *>(tmp_chooser);
+}
+
+int Pacman::GetLives() const {
+    return lives;
 }
 
 void Ghost::SetChooser() {
@@ -89,8 +116,10 @@ void Ghost::SetChooser() {
 
 Ghost::Ghost(Map &map, PositionOwner &pacman)
         : Mob(map),
+
           aim(pacman),
           sight_radius_sqr(SIGHT_RADIUS * SIGHT_RADIUS),
           chase(new ChaseDirectionChooser(*this, pacman, map)),
           rand(RandomDirectionChooser::GetInstance()) {
 }
+

@@ -2,13 +2,14 @@
 #include "model.h"
 #include "loader.h"
 
-Model::Model() : finish(false), pacman(map) {
+Model::Model() : finish(false), pacman(map), ghosts() {
     Loader::Load(map);
     pacman.Init();
     for (auto &i : ghosts) {
         i = new Ghost(map, pacman);
         i->Init();
     }
+    map.EventManager<GameOver>::AddObserver(this);
 }
 
 Model::~Model() {
@@ -27,4 +28,9 @@ void Model::Update() {
         ghost->UpdatePosition();
     }
 }
+
+void Model::HandleEvent(GameOver event) {
+    finish = true;
+}
+
 

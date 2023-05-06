@@ -9,7 +9,7 @@ Direction ChaseDirectionChooser::ChooseDirection() {
     Cell hunter_cell = hunter.GetPosition().GetCell();
     Cell aim_cell = aim.GetPosition().GetCell();
     std::vector<Direction> reversed_path = map.GetShortestPath(hunter_cell, aim_cell);
-    return reversed_path.back();
+    return reversed_path.empty() ? Direction::RIGHT : reversed_path.back();
 }
 
 RandomDirectionChooser* RandomDirectionChooser::instance = nullptr;

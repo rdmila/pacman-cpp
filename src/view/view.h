@@ -36,5 +36,6 @@ class SFMLDrawer : public View {
 public:
     explicit SFMLDrawer(Model&);
     void update() override;
+    void GameOver();
     sf::RenderWindow &GetWindow();
 };

@@ -57,6 +57,12 @@ bool Cell::operator!=(const Cell& other) const {
     return !(*this == other);
 }
 
+Cell& Cell::operator*=(int scale) {
+    y *= scale;
+    x *= scale;
+    return *this;
+}
+
 Shift operator-(const Cell& first, const Cell& second) {
     return {first.y - second.y, first.x - second.x};
 }
@@ -68,4 +74,15 @@ void Position::reverse() {
 
 Cell Position::GetCell() const {
     return shift * 2 <= Edge::length ? edge.first : edge.second;
+}
+
+Cell PositionOnCanvas(const Position &pos) {
+    auto first = pos.edge.first;
+    auto second = pos.edge.second;
+    auto dif = second - first;
+    first *= Edge::length;
+    dif.x *= pos.shift;
+    dif.y *= pos.shift;
+    first += dif;
+    return first;
 }

@@ -65,7 +65,7 @@ SFMLDrawer::SFMLDrawer(Model &model) :
 void SFMLDrawer::update() {
     auto pacman_coords = PosToVector(model.pacman.GetPosition());
     pacman.setPosition(pacman_coords);
-    std::string title = std::to_string(pacman_coords.x) + " " + std::to_string(pacman_coords.y);
+    std::string title = "Lives left: " + std::to_string(model.pacman.GetLives());
     window.setTitle(title);
     window.clear();
     for (const auto &row: maze) {
@@ -84,4 +84,10 @@ void SFMLDrawer::update() {
 
 sf::RenderWindow &SFMLDrawer::GetWindow() {
     return window;
+}
+
+void SFMLDrawer::GameOver() {
+    window.clear(sf::Color::Red);
+    window.setFramerateLimit(1);
+    window.display();
 }

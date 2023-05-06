@@ -9,7 +9,7 @@ class ConsoleLogger;
 class SFMLDrawer;
 class Controller;
 
-class Model {
+class Model: Observer<GameOver> {
     bool finish;
     Map map;
     Pacman pacman;
@@ -17,6 +17,8 @@ class Model {
     const static int CELL_WIDTH = Cell::width;
 
 public:
+    void HandleEvent(GameOver event) override;
+
     Model();
     ~Model();
 
