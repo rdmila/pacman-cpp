@@ -14,15 +14,17 @@ void Mob::Init() {
 
 void Mob::HandleEvent(GhostCollision) {
     position = map.GetPosition(SpawnCell());
+    Shift shift = position.edge.second - position.edge.first;
+    direction = GetDirection(shift);
 }
 
 void Pacman::HandleEvent(GhostCollision event) {
     Mob::HandleEvent(event);
+    GetChooser()->SetDesiredDirection(direction);
     --lives;
     if (lives == 0) {
         map.EventManager<GameOver>::SendEvent(GameOver());
     }
-
 }
 
 Cell Pacman::SpawnCell() {

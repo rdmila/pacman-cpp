@@ -33,7 +33,7 @@ void PlayerDirectionChooser::SetDesiredDirection(Direction desiredDirection) {
     desired_direction = desiredDirection;
 }
 
-PlayerDirectionChooser::PlayerDirectionChooser(): desired_direction(Direction::LEFT) {}
+PlayerDirectionChooser::PlayerDirectionChooser(): desired_direction(Direction::RIGHT) {}
 
 Direction PlayerDirectionChooser::ChooseDirection() {
     return desired_direction;
