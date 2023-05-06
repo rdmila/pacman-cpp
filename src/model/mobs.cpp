@@ -72,7 +72,7 @@ void Ghost::UpdatePosition() {
     Mob::UpdatePosition();
 }
 
-Pacman::Pacman(Map &map) : Mob(map) {
+Pacman::Pacman(Map &map) : Mob(map), score(0) {
 }
 
 void Pacman::SetChooser() {

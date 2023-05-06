@@ -23,6 +23,9 @@ public:
 };
 
 class Pacman : public Mob {
+private:
+    int score;
+protected:
     Cell SpawnCell() override;
     void SetChooser() override;
     bool EdgeDirectionReverseAllowed() override;
