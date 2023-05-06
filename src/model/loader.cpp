@@ -3,7 +3,7 @@
 #include <string>
 
 void Loader::Load(Map& map) {
-    std::ifstream map_file("../../content/map.txt");
+    std::ifstream map_file("content/map.txt");
     std::string line;
     std::getline(map_file, line);
     int height = std::stoi(line);
