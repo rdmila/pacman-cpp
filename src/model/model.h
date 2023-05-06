@@ -3,8 +3,11 @@
 #include <string>
 #include <array>
 #include "view.h"
+#include "../controller/controller.h"
 
 class ConsoleLogger;
+class SFMLDrawer;
+class Controller;
 
 class Model {
     bool finish;
@@ -21,4 +24,6 @@ public:
     void Update();
 
     friend ConsoleLogger;
+    friend SFMLDrawer;
+    friend Controller;
 };

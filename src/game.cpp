@@ -4,21 +4,16 @@
 
 #include <iostream>
 
-Game::Game(): model(), logger(model) {
-    last_run_time = clock_type::now();
+Game::Game() : model(), logger(model), drawer(model), controller(model, drawer.GetWindow()) {
 }
 
 void Game::run() {
     while (true) {
-     std::chrono::duration<long int, std::nano> time_diff = clock_type::now() - last_run_time;
-     if (time_diff.count() < update_interval.count()) {
-         continue;
-     }
-    last_run_time = clock_type::now();
-    model.Update();
-    if (model.IsFinished()) {
-        return;
-    }
-        logger.update();
+        controller.Update();
+        model.Update();
+        if (model.IsFinished()) {
+            return;
+        }
+        drawer.update();
     }
 }

@@ -13,6 +13,8 @@ class Game {
     std::chrono::time_point<clock_type> last_run_time;
     Model model;
     ConsoleLogger logger;
+    SFMLDrawer drawer;
+    Controller controller;
 
 public:
     Game();
