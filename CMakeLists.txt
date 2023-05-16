@@ -14,7 +14,6 @@ find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 set(SOURCES
         src/main.cpp
         src/game.cpp
-        src/model/loader.cpp
         src/model/mobs.cpp
         src/model/map.cpp
         src/model/utils.cpp

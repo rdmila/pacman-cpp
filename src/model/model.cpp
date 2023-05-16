@@ -1,9 +1,8 @@
-#include "../../include/model/mobs.h"
-#include "../../include/model/model.h"
-#include "../../include/model/loader.h"
+#include "model/mobs.h"
+#include "model/model.h"
 
 Model::Model() : finish(false), pacman(map), ghosts() {
-    Loader::Load(map);
+    map.load();
     pacman.Init();
     for (auto &i : ghosts) {
         i = new Ghost(map, pacman);

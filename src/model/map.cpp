@@ -1,6 +1,8 @@
 #include "../../include/model/map.h"
 #include <stdexcept>
 #include <deque>
+#include <fstream>
+#include "config.h"
 
 void Map::SetCell(int y, int x, bool is_passage_cell) {
     is_passage[y][x] = is_passage_cell;
@@ -91,4 +93,22 @@ std::vector<Direction> Map::GetShortestPath(Cell first, Cell second) {
         cell += GetShift(ReverseDirection(dir));
     }
     return path;
+}
+
+void Map::load() {
+    std::ifstream map_file(MAP_FILE_PATH);
+    std::string line;
+    std::getline(map_file, line);
+    int height_ = std::stoi(line);
+
+    std::getline(map_file, line);
+    int width_ = line.length();
+
+    SetSize(height_, width_);
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            SetCell(i, j, (line[j] == '0'));
+        }
+        std::getline(map_file, line);
+    }
 }
