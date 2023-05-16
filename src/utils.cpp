@@ -1,6 +1,5 @@
 #include "utils.h"
 #include <utility>
-#include <iostream>
 #include <stdexcept>
 
 Shift GetShift(Direction direction) {

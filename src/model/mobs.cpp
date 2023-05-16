@@ -1,5 +1,4 @@
 #include "model/mobs.h"
-#include <iostream>
 #include "constants.h"
 
 Mob::Mob(Map &map) : map(map), speed(NORMAL_MOB_SPEED) {}

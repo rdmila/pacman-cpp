@@ -3,7 +3,6 @@
 #include <deque>
 #include <fstream>
 #include "config.h"
-#include <iostream>
 
 void Map::SetCell(size_t y, size_t x, bool is_passage_cell) {
     is_passage[y][x] = is_passage_cell;
@@ -94,9 +93,7 @@ void Map::load() {
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             SetCell(i, j, (line[j] == '0'));
-            std::cout << (is_passage[i][j] == false);
         }
-        std::cout << std::endl;
         std::getline(map_file, line);
     }
 }
