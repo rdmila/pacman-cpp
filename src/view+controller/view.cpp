@@ -1,4 +1,4 @@
-#include "view.h"
+#include "../../include/view+controller/view.h"
 #include <iostream>
 #include <string>
 

@@ -2,8 +2,8 @@
 #include "mobs.h"
 #include <string>
 #include <array>
-#include "view.h"
-#include "../controller/controller.h"
+#include "../view+controller/view.h"
+#include "../view+controller/controller.h"
 
 class ConsoleLogger;
 class SFMLDrawer;

@@ -1,4 +1,4 @@
-#include "mobs.h"
+#include "../../include/model/mobs.h"
 #include <iostream>
 
 Mob::Mob(Map &map) : map(map), speed(10) {}

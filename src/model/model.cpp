@@ -1,6 +1,6 @@
-#include "mobs.h"
-#include "model.h"
-#include "loader.h"
+#include "../../include/model/mobs.h"
+#include "../../include/model/model.h"
+#include "../../include/model/loader.h"
 
 Model::Model() : finish(false), pacman(map), ghosts() {
     Loader::Load(map);
@@ -32,5 +32,3 @@ void Model::Update() {
 void Model::HandleEvent(GameOver event) {
     finish = true;
 }
-
-

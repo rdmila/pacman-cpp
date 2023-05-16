@@ -1,9 +1,10 @@
-#include "loader.h"
+#include "../../include/model/loader.h"
 #include <fstream>
 #include <string>
+#include "config.h"
 
 void Loader::Load(Map& map) {
-    std::ifstream map_file("content/map.txt");
+    std::ifstream map_file(MAP_FILE_PATH);
     std::string line;
     std::getline(map_file, line);
     int height = std::stoi(line);

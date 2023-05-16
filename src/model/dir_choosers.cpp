@@ -1,4 +1,4 @@
-#include "dir_choosers.h"
+#include "../../include/model/dir_choosers.h"
 #include <cstdlib>
 #include <iostream>
 

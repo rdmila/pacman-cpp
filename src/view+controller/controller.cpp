@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include "controller.h"
-#include "../model/utils.h"
+#include "../../include/view+controller/controller.h"
+#include "../../include/model/utils.h"
 
 void Controller::Update() {
     sf::Event event{};

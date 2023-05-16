@@ -1,8 +1,4 @@
-#include "game.h"
-#include <chrono>
-#include <ratio>
-
-#include <iostream>
+#include "../include/game.h"
 
 Game::Game() : model(), logger(model), drawer(model), controller(model, drawer.GetWindow()) {
 }

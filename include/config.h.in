@@ -1,0 +1,1 @@
+#cmakedefine MAP_FILE_PATH "@MAP_FILE_PATH@"

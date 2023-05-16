@@ -1,7 +1,7 @@
 #pragma once
 
 #include "model/model.h"
-#include "view/view.h"
+#include "view+controller/view.h"
 #include <chrono>
 
 using namespace std::chrono_literals;
