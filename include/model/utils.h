@@ -1,10 +1,7 @@
 #pragma once
 
 #include <vector>
-
-enum class Alignment {
-    VERTICAL, HORIZONTAL
-};
+#include <cstddef>
 
 enum class Direction {
     UP = 1, RIGHT = 2, DOWN = -1, LEFT = -2, NONE = 0
@@ -22,8 +19,8 @@ Direction ReverseDirection(Direction dir);
 struct Cell {
     static const int width = 100;
 
-    int y;
-    int x;
+    size_t y;
+    size_t x;
     bool operator==(const Cell &) const;
     bool operator!=(const Cell &) const;
     Cell& operator+=(const Shift &);
@@ -37,8 +34,6 @@ struct Edge {
 
     Cell first;
     Cell second;
-
-    // Alignment getAlignment();
 };
 
 struct Position {

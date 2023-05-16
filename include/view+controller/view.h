@@ -1,5 +1,6 @@
 #pragma once
-#include "../model/model.h"
+
+#include "model/model.h"
 #include <SFML/Graphics.hpp>
 #include <boost/multi_array.hpp>
 

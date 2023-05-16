@@ -1,10 +1,10 @@
-#include "../../include/model/map.h"
+#include "model/map.h"
 #include <stdexcept>
 #include <deque>
 #include <fstream>
 #include "config.h"
 
-void Map::SetCell(int y, int x, bool is_passage_cell) {
+void Map::SetCell(size_t y, size_t x, bool is_passage_cell) {
     is_passage[y][x] = is_passage_cell;
 }
 
@@ -32,29 +32,29 @@ Position Map::GetPosition(const Cell& first) {
     throw std::invalid_argument("Invalid cell: no available directions");
 }
 
-void Map::SetSize(int height_, int width_) {
+void Map::SetSize(size_t height_, size_t width_) {
     height = height_;
     width = width_;
     boost::multi_array<bool, 2>::extent_gen extents;
     is_passage.resize(extents[height][width_]);
 }
 
-int Map::GetHeight() const {
+size_t Map::GetHeight() const {
     return height;
 }
 
-int Map::GetWidth() const {
+size_t Map::GetWidth() const {
     return width;
 }
 
-int Map::GetStraightDistanceSqr(Cell cell, Cell cell1) {
-    auto shift = cell1 - cell;
+int Map::GetStraightDistanceSqr(Cell from, Cell to) {
+    auto shift = to - from;
     shift.x *= Cell::width;
     shift.y *= Cell::width;
     return (shift.x * shift.x + shift.y * shift.y);
 }
 
-std::vector<Direction> Map::GetShortestPath(Cell first, Cell second) {
+std::vector<Direction> Map::GetShortestPath(Cell from, Cell to) {
     boost::multi_array<Direction, 2>::extent_gen extents;
     boost::multi_array<Direction, 2> prev_dir(extents[height][width]);
     for (int i = 0; i < height; ++i) {
@@ -63,7 +63,7 @@ std::vector<Direction> Map::GetShortestPath(Cell first, Cell second) {
         }
     }
 
-    std::deque<Cell> to_visit(1, first);
+    std::deque<Cell> to_visit(1, from);
     while (!to_visit.empty()) {
         Cell cell = to_visit.front();
         to_visit.pop_front();
@@ -75,10 +75,10 @@ std::vector<Direction> Map::GetShortestPath(Cell first, Cell second) {
             auto shift = GetShift(dir);
             Cell next = cell;
             next += shift;
-            if (IsPassage(next) && prev_dir[next.y][next.x] == Direction::NONE && next != first) {
+            if (IsPassage(next) && prev_dir[next.y][next.x] == Direction::NONE && next != from) {
                 prev_dir[next.y][next.x] = static_cast<Direction>(i);
                 to_visit.push_back(next);
-                if (next == second) {
+                if (next == to) {
                     break;
                 }
             }
@@ -86,8 +86,8 @@ std::vector<Direction> Map::GetShortestPath(Cell first, Cell second) {
     }
 
     std::vector<Direction> path;
-    Cell cell = second;
-    while (cell != first) {
+    Cell cell = to;
+    while (cell != from) {
         auto dir = prev_dir[cell.y][cell.x];
         path.push_back(dir);
         cell += GetShift(ReverseDirection(dir));

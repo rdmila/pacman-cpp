@@ -1,7 +1,8 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
-#include "../model/dir_choosers.h"
-#include "../model/model.h"
+#include "model/dir_choosers.h"
+#include "model/model.h"
 
 class Model;
 

@@ -1,7 +1,10 @@
-#include "../include/game.h"
+#include "game.h"
 
-Game::Game() : model(), logger(model), drawer(model), controller(model, drawer.GetWindow()) {
-}
+Game::Game()
+        : model(),
+          logger(model),
+          drawer(model),
+          controller(model, drawer.GetWindow()) {}
 
 void Game::run() {
     while (true) {

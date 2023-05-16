@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "../../include/view+controller/controller.h"
-#include "../../include/model/utils.h"
+#include "view+controller/controller.h"
 
 void Controller::Update() {
     sf::Event event{};
@@ -20,4 +19,5 @@ void Controller::Update() {
     }
 }
 
-Controller::Controller(Model &model, sf::RenderWindow &window) : model(model), window(window), pacman_chooser(model.pacman.GetChooser()) {}
+Controller::Controller(Model &model, sf::RenderWindow &window)
+        : model(model), window(window), pacman_chooser(model.pacman.GetChooser()) {}

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "map.h"
 #include "utils.h"
 #include "dir_choosers.h"
@@ -40,7 +41,7 @@ public:
 
 class Ghost : public Mob {
     static const int SIGHT_RADIUS = 4 * Cell::width;
-    
+
     int sight_radius_sqr;
     PositionOwner& aim;
     DirectionChooser* chase;

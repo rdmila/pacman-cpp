@@ -1,4 +1,4 @@
-#include "../../include/model/utils.h"
+#include "model/utils.h"
 #include <utility>
 #include <stdexcept>
 
@@ -64,7 +64,12 @@ Cell& Cell::operator*=(int scale) {
 }
 
 Shift operator-(const Cell& first, const Cell& second) {
-    return {first.y - second.y, first.x - second.x};
+    int fir_x = static_cast<int>(first.x);
+    int fir_y = static_cast<int>(first.y);
+    int sec_x = static_cast<int>(second.x);
+    int sec_y = static_cast<int>(second.y);
+
+    return {fir_y - sec_y, fir_x - sec_x};
 }
 
 void Position::reverse() {

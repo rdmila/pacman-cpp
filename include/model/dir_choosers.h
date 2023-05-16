@@ -1,4 +1,5 @@
 #pragma once
+
 #include "utils.h"
 #include "map.h"
 
@@ -8,21 +9,21 @@ public:
 };
 
 class RandomDirectionChooser : public DirectionChooser {
-    static RandomDirectionChooser* instance;
+    static RandomDirectionChooser *instance;
     RandomDirectionChooser() = default;
-    RandomDirectionChooser(const RandomDirectionChooser&) = delete;
+    RandomDirectionChooser(const RandomDirectionChooser &) = delete;
 public:
-    RandomDirectionChooser& operator=(RandomDirectionChooser&) = delete;
-    static RandomDirectionChooser& GetInstance();
+    RandomDirectionChooser &operator=(RandomDirectionChooser &) = delete;
+    static RandomDirectionChooser &GetInstance();
     Direction ChooseDirection() override;
 };
 
 class ChaseDirectionChooser : public DirectionChooser {
-    PositionOwner& hunter;
-    PositionOwner& aim;
-    Map& map;
+    PositionOwner &hunter;
+    PositionOwner &aim;
+    Map &map;
 public:
-    ChaseDirectionChooser(PositionOwner& hunter, PositionOwner& aim, Map& map);
+    ChaseDirectionChooser(PositionOwner &hunter, PositionOwner &aim, Map &map);
     Direction ChooseDirection() override;
 };
 

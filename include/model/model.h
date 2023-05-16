@@ -1,19 +1,22 @@
 #pragma once
+
 #include "mobs.h"
 #include <string>
 #include <array>
-#include "../view+controller/view.h"
-#include "../view+controller/controller.h"
+#include "view+controller/view.h"
+#include "view+controller/controller.h"
 
 class ConsoleLogger;
+
 class SFMLDrawer;
+
 class Controller;
 
-class Model: Observer<GameOver> {
+class Model : Observer<GameOver> {
     bool finish;
     Map map;
     Pacman pacman;
-    std::array<Ghost*, 5> ghosts;
+    std::array<Ghost *, 5> ghosts;
     const static int CELL_WIDTH = Cell::width;
 
 public:
