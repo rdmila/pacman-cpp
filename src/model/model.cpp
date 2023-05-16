@@ -5,16 +5,10 @@ Model::Model() : finish(false), pacman(map), ghosts() {
     map.load();
     pacman.Init();
     for (auto &i : ghosts) {
-        i = new Ghost(map, pacman);
+        i = std::make_unique<Ghost>(map, pacman);
         i->Init();
     }
     map.EventManager<GameOver>::AddObserver(this);
-}
-
-Model::~Model() {
-    for (auto &i : ghosts) {
-        delete i;
-    }
 }
 
 bool Model::IsFinished() {

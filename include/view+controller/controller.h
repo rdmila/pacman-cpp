@@ -8,7 +8,7 @@ class Model;
 
 class Controller {
     Model& model;
-    PlayerDirectionChooser* pacman_chooser;
+    PlayerDirectionChooser& pacman_chooser;
     sf::RenderWindow& window;
 public:
     Controller(Model &model, sf::RenderWindow &window);

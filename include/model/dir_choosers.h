@@ -9,12 +9,7 @@ public:
 };
 
 class RandomDirectionChooser : public DirectionChooser {
-    static RandomDirectionChooser *instance;
-    RandomDirectionChooser() = default;
-    RandomDirectionChooser(const RandomDirectionChooser &) = delete;
 public:
-    RandomDirectionChooser &operator=(RandomDirectionChooser &) = delete;
-    static RandomDirectionChooser &GetInstance();
     Direction ChooseDirection() override;
 };
 

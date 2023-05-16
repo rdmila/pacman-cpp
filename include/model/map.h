@@ -15,6 +15,7 @@ class Map : public EventManager<GhostCollision>,
     void SetCell(size_t y, size_t x, bool is_passage_cell);
 
 public:
+    ~Map();
     void load();
     bool IsPassage(const Cell &cell);
     bool IsLegalDirection(Cell cell, Direction direction);

@@ -12,21 +12,12 @@ Direction ChaseDirectionChooser::ChooseDirection() {
     return reversed_path.empty() ? Direction::RIGHT : reversed_path.back();
 }
 
-RandomDirectionChooser* RandomDirectionChooser::instance = nullptr;
-
 Direction RandomDirectionChooser::ChooseDirection() {
     int dir = std::rand() % 4 - 2;
     if (dir >= 0) {
         ++dir;
     }
     return static_cast<Direction>(dir);
-}
-
-RandomDirectionChooser& RandomDirectionChooser::GetInstance() {
-    if (instance == nullptr) {
-        instance = new RandomDirectionChooser();
-    }
-    return *instance;
 }
 
 void PlayerDirectionChooser::SetDesiredDirection(Direction desiredDirection) {

@@ -92,3 +92,8 @@ void SFMLDrawer::GameOver() {
     window.setFramerateLimit(1);
     window.display();
 }
+
+SFMLDrawer::~SFMLDrawer() {
+    boost::multi_array<sf::RectangleShape, 2>::extent_gen extents;
+    maze.resize(extents[0][0]);
+}

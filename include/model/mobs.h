@@ -3,17 +3,18 @@
 #include "map.h"
 #include "utils.h"
 #include "dir_choosers.h"
+#include <memory>
 
 class Mob : public PositionOwner, public Observer<GhostCollision> {
 protected:
     Position position;
     Direction direction;
     int speed;
-    DirectionChooser* tmp_chooser;
+    std::shared_ptr<DirectionChooser> tmp_chooser;
     Map& map;
     void HandleEvent(GhostCollision) override;
     virtual Position SpawnPosition() = 0;
-    virtual void SetChooser() = 0;
+    virtual void InitChooser() = 0;
     virtual bool EdgeDirectionReverseAllowed() = 0;
 
 public:
@@ -30,11 +31,11 @@ private:
     int lives;
 protected:
     Position SpawnPosition() override;
-    void SetChooser() override;
+    void InitChooser() override;
     bool EdgeDirectionReverseAllowed() override;
 public:
     void HandleEvent(GhostCollision) override;
-    PlayerDirectionChooser* GetChooser();
+    PlayerDirectionChooser& GetChooser();
     explicit Pacman(Map&);
     [[nodiscard]] int GetLives() const;
 };
@@ -44,11 +45,11 @@ class Ghost : public Mob {
 
     int sight_radius_sqr;
     PositionOwner& aim;
-    DirectionChooser* chase;
-    DirectionChooser& rand;
+    std::shared_ptr<DirectionChooser> chase;
+    std::shared_ptr<DirectionChooser> rand;
 
     Position SpawnPosition() override;
-    void SetChooser() override;
+    void InitChooser() override;
     bool EdgeDirectionReverseAllowed() override;
 public:
     void UpdatePosition() override;

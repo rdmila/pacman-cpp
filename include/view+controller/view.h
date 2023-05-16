@@ -33,9 +33,9 @@ class SFMLDrawer : public View {
 
     sf::Vector2f CellToVector(const Cell& cell) const;
     sf::Vector2f PosToVector(const Position& pos);
-//    sf::CircleShape
 public:
     explicit SFMLDrawer(Model&);
+    ~SFMLDrawer();
     void update() override;
     void GameOver();
     sf::RenderWindow &GetWindow();

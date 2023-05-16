@@ -1,5 +1,6 @@
 #include "model/mobs.h"
 #include "constants.h"
+#include <iostream>
 
 Mob::Mob(Map &map) : map(map), speed(NORMAL_MOB_SPEED) {}
 
@@ -7,7 +8,7 @@ void Mob::Init() {
     position = SpawnPosition();
     Shift shift = position.edge.to - position.edge.from;
     direction = GetDirection(shift);
-    SetChooser();
+    InitChooser();
     map.EventManager<GhostCollision>::AddObserver(this);
 }
 
@@ -19,7 +20,7 @@ void Mob::HandleEvent(GhostCollision) {
 
 void Pacman::HandleEvent(GhostCollision event) {
     Mob::HandleEvent(event);
-    GetChooser()->SetDesiredDirection(direction);
+    GetChooser().SetDesiredDirection(direction);
     --lives;
     if (lives == 0) {
         map.EventManager<GameOver>::SendEvent(GameOver());
@@ -83,7 +84,7 @@ Position Mob::GetPosition() {
 
 void Ghost::UpdatePosition() {
     int dist_to_aim_sqr = map.GetStraightDistanceSqr(position.GetCell(), aim.GetPosition().GetCell());
-    tmp_chooser = (dist_to_aim_sqr <= sight_radius_sqr ? chase : &rand);
+    tmp_chooser = (dist_to_aim_sqr <= sight_radius_sqr ? chase : rand);
     Mob::UpdatePosition();
     auto ghost_pos = PositionOnCanvas(position);
     auto pacman_pos = PositionOnCanvas(aim.GetPosition());
@@ -97,20 +98,20 @@ void Ghost::UpdatePosition() {
 Pacman::Pacman(Map &map) : Mob(map), score(0), lives(2) {
 }
 
-void Pacman::SetChooser() {
-    tmp_chooser = new PlayerDirectionChooser();
+void Pacman::InitChooser() {
+    tmp_chooser = std::make_shared<PlayerDirectionChooser>();
 }
 
-PlayerDirectionChooser *Pacman::GetChooser() {
-    return dynamic_cast<PlayerDirectionChooser *>(tmp_chooser);
+PlayerDirectionChooser& Pacman::GetChooser() {
+    return dynamic_cast<PlayerDirectionChooser&>(*tmp_chooser);
 }
 
 int Pacman::GetLives() const {
     return lives;
 }
 
-void Ghost::SetChooser() {
-    tmp_chooser = &rand;
+void Ghost::InitChooser() {
+    tmp_chooser = rand;
 }
 
 Ghost::Ghost(Map &map, PositionOwner &pacman)
@@ -118,7 +119,6 @@ Ghost::Ghost(Map &map, PositionOwner &pacman)
 
           aim(pacman),
           sight_radius_sqr(SIGHT_RADIUS * SIGHT_RADIUS),
-          chase(new ChaseDirectionChooser(*this, pacman, map)),
-          rand(RandomDirectionChooser::GetInstance()) {
+          chase(std::make_shared<ChaseDirectionChooser>(*this, pacman, map)),
+          rand(std::make_shared<RandomDirectionChooser>()) {
 }
-

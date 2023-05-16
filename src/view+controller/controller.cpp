@@ -8,13 +8,13 @@ void Controller::Update() {
             window.close();
             model.finish = true;
         } else if (event.key.code == sf::Keyboard::Left) {
-            pacman_chooser->SetDesiredDirection(Direction::LEFT);
+            pacman_chooser.SetDesiredDirection(Direction::LEFT);
         } else if (event.key.code == sf::Keyboard::Right) {
-            pacman_chooser->SetDesiredDirection(Direction::RIGHT);
+            pacman_chooser.SetDesiredDirection(Direction::RIGHT);
         } else if (event.key.code == sf::Keyboard::Down) {
-            pacman_chooser->SetDesiredDirection(Direction::DOWN);
+            pacman_chooser.SetDesiredDirection(Direction::DOWN);
         } else if (event.key.code == sf::Keyboard::Up) {
-            pacman_chooser->SetDesiredDirection(Direction::UP);
+            pacman_chooser.SetDesiredDirection(Direction::UP);
         }
     }
 }

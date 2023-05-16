@@ -97,3 +97,8 @@ void Map::load() {
         std::getline(map_file, line);
     }
 }
+
+Map::~Map() {
+    boost::multi_array<bool, 2>::extent_gen extents;
+    is_passage.resize(extents[0][0]);
+}

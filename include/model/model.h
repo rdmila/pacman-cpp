@@ -5,6 +5,7 @@
 #include <array>
 #include "view+controller/view.h"
 #include "view+controller/controller.h"
+#include <memory>
 
 class ConsoleLogger;
 
@@ -16,14 +17,13 @@ class Model : Observer<GameOver> {
     bool finish;
     Map map;
     Pacman pacman;
-    std::array<Ghost *, 5> ghosts;
+    std::array<std::unique_ptr<Ghost>, 5> ghosts;
     const static int CELL_WIDTH = Cell::width;
 
 public:
     void HandleEvent(GameOver event) override;
 
     Model();
-    ~Model();
 
     bool IsFinished();
     void Update();
