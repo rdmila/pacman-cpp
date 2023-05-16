@@ -3,6 +3,7 @@
 #include <deque>
 #include <fstream>
 #include "config.h"
+#include <iostream>
 
 void Map::SetCell(size_t y, size_t x, bool is_passage_cell) {
     is_passage[y][x] = is_passage_cell;
@@ -15,21 +16,6 @@ bool Map::IsPassage(const Cell& cell) {
 bool Map::IsLegalDirection(Cell cell, Direction dir) {
     cell += GetShift(dir);
     return IsPassage(cell);
-}
-
-Position Map::GetPosition(const Cell& first) {
-    for (int dir_int = -2; dir_int <= 2; ++dir_int) {
-        auto dir = static_cast<Direction>(dir_int);
-        if (dir == Direction::NONE) {
-            continue;
-        }
-        if (IsLegalDirection(first, dir)) {
-            Cell second = first;
-            second += GetShift(dir);
-            return {{first, second}, 0};
-        }
-    }
-    throw std::invalid_argument("Invalid cell: no available directions");
 }
 
 void Map::SetSize(size_t height_, size_t width_) {
@@ -108,7 +94,9 @@ void Map::load() {
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             SetCell(i, j, (line[j] == '0'));
+            std::cout << (is_passage[i][j] == false);
         }
+        std::cout << std::endl;
         std::getline(map_file, line);
     }
 }

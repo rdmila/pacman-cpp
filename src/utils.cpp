@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <utility>
+#include <iostream>
 #include <stdexcept>
 
 Shift GetShift(Direction direction) {
@@ -49,6 +50,12 @@ Cell& Cell::operator+=(const Shift& shift) {
     return *this;
 }
 
+Cell operator+(const Cell& first, const Shift& second) {
+    Cell res = first;
+    res += second;
+    return res;
+}
+
 bool Cell::operator==(const Cell& other) const {
     return x == other.x && y == other.y;
 }
@@ -63,31 +70,89 @@ Cell& Cell::operator*=(int scale) {
     return *this;
 }
 
-Shift operator-(const Cell& first, const Cell& second) {
-    int fir_x = static_cast<int>(first.x);
-    int fir_y = static_cast<int>(first.y);
-    int sec_x = static_cast<int>(second.x);
-    int sec_y = static_cast<int>(second.y);
+Cell::Cell(int y, int x): y(y), x(x) {}
 
-    return {fir_y - sec_y, fir_x - sec_x};
+Shift operator-(const Cell& first, const Cell& second) {
+    return {first.y - second.y, first.x - second.x};
+}
+
+Point& Point::operator-=(const Point& other) {
+    y -= other.y;
+    x -= other.x;
+    return *this;
+}
+
+Point& Point::operator+=(const Point& other) {
+    y += other.y;
+    x += other.x;
+    return *this;
+}
+
+Point& Point::operator*=(float scale) {
+    y *= scale;
+    x *= scale;
+    return *this;
+}
+
+Point& Point::operator/=(float scale) {
+    y /= scale;
+    x /= scale;
+    return *this;
+}
+
+Point Point::operator*(float scale) const {
+    Point res = *this;
+    res *= scale;
+    return res;
+}
+
+Point Point::operator/(float scale) const {
+    Point res = *this;
+    res /= scale;
+    return res;
+}
+
+float Point::magnitude_sqr() const {
+    return y * y + x * x;
+}
+
+Point operator-(const Point& first, const Point& second) {
+    Point res = first;
+    res -= second;
+    return res;
+}
+
+Point operator+(const Point& first, const Point& second) {
+    Point res = first;
+    res += second;
+    return res;
 }
 
 void Position::reverse() {
-    std::swap(edge.first, edge.second);
+    std::swap(edge.from, edge.to);
     shift = Edge::length - shift;
 }
 
 Cell Position::GetCell() const {
-    return shift * 2 <= Edge::length ? edge.first : edge.second;
+    return shift * 2 <= Edge::length ? edge.from : edge.to;
 }
 
-Cell PositionOnCanvas(const Position &pos) {
-    auto first = pos.edge.first;
-    auto second = pos.edge.second;
-    auto dif = second - first;
-    first *= Edge::length;
-    dif.x *= pos.shift;
-    dif.y *= pos.shift;
-    first += dif;
-    return first;
+Position::Position(Cell from, Direction direction): edge(from, direction), shift(0) {}
+
+Position::Position(Edge edge, int shift): edge(edge), shift(shift) {}
+
+Point PositionOnCanvas(const Cell& cell) {
+    return {static_cast<float>(cell.y * Cell::width), static_cast<float>(cell.x * Cell::width)};
 }
+
+Point PositionOnCanvas(const Position &pos) {
+    Point src_point = PositionOnCanvas(pos.edge.from);
+    Point dst_point = PositionOnCanvas(pos.edge.to);
+    Point shift = (dst_point - src_point) * (static_cast<float>(pos.shift) / Edge::length);
+    Point res = src_point + shift;
+    return res;
+}
+
+Edge::Edge(Cell from, Cell to): from(from), to(to) {}
+
+Edge::Edge(Cell from, Direction direction): from(from), to(from + GetShift(direction)) {}

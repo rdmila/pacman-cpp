@@ -1,20 +1,20 @@
 #include "model/mobs.h"
 #include <iostream>
+#include "constants.h"
 
-Mob::Mob(Map &map) : map(map), speed(10) {}
+Mob::Mob(Map &map) : map(map), speed(NORMAL_MOB_SPEED) {}
 
 void Mob::Init() {
-    Cell cell = SpawnCell();
-    position = map.GetPosition(cell);
-    Shift shift = position.edge.second - position.edge.first;
+    position = SpawnPosition();
+    Shift shift = position.edge.to - position.edge.from;
     direction = GetDirection(shift);
     SetChooser();
     map.EventManager<GhostCollision>::AddObserver(this);
 }
 
 void Mob::HandleEvent(GhostCollision) {
-    position = map.GetPosition(SpawnCell());
-    Shift shift = position.edge.second - position.edge.first;
+    position = SpawnPosition();
+    Shift shift = position.edge.to - position.edge.from;
     direction = GetDirection(shift);
 }
 
@@ -27,16 +27,16 @@ void Pacman::HandleEvent(GhostCollision event) {
     }
 }
 
-Cell Pacman::SpawnCell() {
-    return {18, 6};
+Position Pacman::SpawnPosition() {
+    return PACMAN_SPAWN_POSITION;
 }
 
 bool Pacman::EdgeDirectionReverseAllowed() {
     return true;
 }
 
-Cell Ghost::SpawnCell() {
-    return {1, 2};
+Position Ghost::SpawnPosition() {
+    return GHOST_SPAWN_POSITION;
 }
 
 bool Ghost::EdgeDirectionReverseAllowed() {
@@ -49,16 +49,15 @@ void Mob::UpdatePosition() {
         int to_vertex = Edge::length - position.shift;
         if (to_vertex == 0) {
             auto wanted_dir = tmp_chooser->ChooseDirection();
-            Cell cell = position.edge.second;
+            Cell cell = position.edge.to;
             if (map.IsLegalDirection(cell, wanted_dir)) {
                 direction = wanted_dir;
             } else if (!map.IsLegalDirection(cell, direction)) {
                 break;
             }
-            Cell first = position.edge.second;
-            Cell second = first;
-            second += GetShift(direction);
-            position = {{first, second}, 0};
+            Cell first = position.edge.to;
+            Cell second = first + GetShift(direction);
+            position = Position(Edge(first, second), 0);
         } else {
             if (EdgeDirectionReverseAllowed()) {
                 auto wanted_dir = tmp_chooser->ChooseDirection();
@@ -89,9 +88,8 @@ void Ghost::UpdatePosition() {
     Mob::UpdatePosition();
     auto ghost_pos = PositionOnCanvas(position);
     auto pacman_pos = PositionOnCanvas(aim.GetPosition());
-    auto dif = ghost_pos - pacman_pos;
-    int dist_sqr = dif.x * dif.x + dif.y * dif.y;
-    int limit = Edge::length / 2;
+    float dist_sqr = (ghost_pos - pacman_pos).magnitude_sqr();
+    float limit = Edge::length / 2.;
     if (dist_sqr <= limit * limit) {
         map.EventManager<GhostCollision>::SendEvent(GhostCollision());
     }

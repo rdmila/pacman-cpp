@@ -18,7 +18,6 @@ public:
     void load();
     bool IsPassage(const Cell &cell);
     bool IsLegalDirection(Cell cell, Direction direction);
-    Position GetPosition(const Cell &);
     [[nodiscard]] size_t GetHeight() const;
     [[nodiscard]] size_t GetWidth() const;
 

@@ -12,6 +12,21 @@ struct Shift {
     int x;
 };
 
+struct Point {
+    float y;
+    float x;
+    Point& operator-=(const Point&);
+    Point& operator+=(const Point&);
+    Point& operator*=(float);
+    Point& operator/=(float);
+    Point operator*(float) const;
+    Point operator/(float) const;
+    float magnitude_sqr() const;
+};
+
+Point operator-(const Point&, const Point&);
+Point operator+(const Point&, const Point&);
+
 Shift GetShift(Direction);
 Direction GetDirection(Shift);
 Direction ReverseDirection(Direction dir);
@@ -19,21 +34,29 @@ Direction ReverseDirection(Direction dir);
 struct Cell {
     static const int width = 100;
 
-    size_t y;
-    size_t x;
+    int y;
+    int x;
     bool operator==(const Cell &) const;
     bool operator!=(const Cell &) const;
     Cell& operator+=(const Shift &);
     Cell& operator*=(int scale);
+
+    Cell() = default;
+    Cell(int y, int x);
 };
 
-Shift operator-(const Cell &first, const Cell &second);
+Cell operator+(const Cell&, const Shift&);
+Shift operator-(const Cell&, const Cell&);
 
 struct Edge {
     static const int length = Cell::width;
 
-    Cell first;
-    Cell second;
+    Cell from;
+    Cell to;
+
+    Edge() = default;
+    Edge(Cell, Cell);
+    Edge(Cell, Direction);
 };
 
 struct Position {
@@ -41,9 +64,14 @@ struct Position {
     int shift;
     void reverse();
     Cell GetCell() const;
+
+    Position() = default;
+    Position(Edge, int);
+    Position(Cell, Direction);
 };
 
-Cell PositionOnCanvas(const Position &pos);
+Point PositionOnCanvas(const Cell& cell);
+Point PositionOnCanvas(const Position& pos);
 
 class PositionOwner {
 public:

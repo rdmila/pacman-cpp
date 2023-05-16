@@ -11,8 +11,8 @@ protected:
     int speed;
     DirectionChooser* tmp_chooser;
     Map& map;
-    virtual void HandleEvent(GhostCollision) override;
-    virtual Cell SpawnCell() = 0;
+    void HandleEvent(GhostCollision) override;
+    virtual Position SpawnPosition() = 0;
     virtual void SetChooser() = 0;
     virtual bool EdgeDirectionReverseAllowed() = 0;
 
@@ -29,14 +29,14 @@ private:
     int score;
     int lives;
 protected:
-    Cell SpawnCell() override;
+    Position SpawnPosition() override;
     void SetChooser() override;
     bool EdgeDirectionReverseAllowed() override;
 public:
     void HandleEvent(GhostCollision) override;
     PlayerDirectionChooser* GetChooser();
     explicit Pacman(Map&);
-    int GetLives() const;
+    [[nodiscard]] int GetLives() const;
 };
 
 class Ghost : public Mob {
@@ -47,7 +47,7 @@ class Ghost : public Mob {
     DirectionChooser* chase;
     DirectionChooser& rand;
 
-    Cell SpawnCell() override;
+    Position SpawnPosition() override;
     void SetChooser() override;
     bool EdgeDirectionReverseAllowed() override;
 public:

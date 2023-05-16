@@ -1,6 +1,7 @@
 #include "view+controller/view.h"
 #include <iostream>
 #include <string>
+#include "constants.h"
 
 View::View(Model &model) : model(model) {}
 
@@ -8,11 +9,11 @@ ConsoleLogger::ConsoleLogger(Model &model) : View(model) {}
 
 void ConsoleLogger::update() {
     Position pacman_pos = model.pacman.GetPosition();
-    std::cout << "Pacman position: " << pacman_pos.edge.first.x << " " << pacman_pos.edge.first.y << std::endl;
+    std::cout << "Pacman position: " << pacman_pos.edge.from.x << " " << pacman_pos.edge.from.y << std::endl;
     int i = 0;
     for (auto &g: model.ghosts) {
         Position pos = g->GetPosition();
-        std::cout << "Ghost " << i << " position: " << pos.edge.first.x << " " << pos.edge.first.y << std::endl;
+        std::cout << "Ghost " << i << " position: " << pos.edge.to.x << " " << pos.edge.to.y << std::endl;
         ++i;
     }
 }
@@ -24,8 +25,8 @@ sf::Vector2f SFMLDrawer::CellToVector(const Cell &cell) const {
 }
 
 sf::Vector2f SFMLDrawer::PosToVector(const Position &pos) {
-    auto first = CellToVector(pos.edge.first);
-    auto second = CellToVector(pos.edge.second);
+    auto first = CellToVector(pos.edge.from);
+    auto second = CellToVector(pos.edge.to);
     auto dif = second - first;
     float scale = static_cast<float>(pos.shift) / static_cast<float>(Edge::length);
     return first + dif * scale;
@@ -39,7 +40,7 @@ SFMLDrawer::SFMLDrawer(Model &model) :
         maze_width(model.map.GetWidth()) {
     window_width = pixels_for_cell * maze_width;
     window.create(sf::VideoMode(window_width, window_height), "Pac-Man");
-    window.setFramerateLimit(30);
+    window.setFramerateLimit(FPS);
 
     pacman.setRadius(pixels_for_cell / 2);
     pacman.setFillColor(sf::Color::Yellow);
